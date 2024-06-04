@@ -1,6 +1,11 @@
 const router = require('express').Router()
 const Cars = require('./cars-model')
-const { checkCarId } = require('./cars-middleware')
+const { 
+    checkCarId, 
+    checkCarPayload, 
+    checkVinNumberValid, 
+    checkVinNumberUnique 
+} = require('./cars-middleware')
 
 router.get('/', async (req, res, next) => {
     try {
@@ -19,12 +24,30 @@ router.get('/:id', checkCarId, async (req, res, next) => {
     }
 })
 
-router.post('/', (req, res, next) => {
-
+router.post('/', 
+    checkCarPayload, 
+    checkVinNumberValid, 
+    checkVinNumberUnique, 
+    async (req, res, next) => {
+      try {
+          const car = await Cars.create(req.body)
+          res.status(201).json(car)
+      } catch (error) {
+          next(error)
+      }
 })
 
-router.put('/:id', (req, res, next) => {
-
+router.put('/:id', 
+    checkCarId, 
+    checkCarPayload, 
+    checkVinNumberValid, 
+    checkVinNumberUnique, 
+    async (req, res, next) => {
+      try {
+        
+      } catch (error) {
+        next(error)
+      }
 })
 
 router.delete('/:id', (req, res, next) => {
