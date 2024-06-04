@@ -8,6 +8,7 @@ const checkCarId = async (req, res, next) => {
   if (!car) {
     next({ status: 404, message: `car with id ${id} is not found` })
   } else {
+    req.body.car = car
     next()
   }
 }
