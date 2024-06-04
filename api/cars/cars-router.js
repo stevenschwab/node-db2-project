@@ -21,11 +21,11 @@ router.delete('/:id', (req, res, next) => {
 
 })
 
-router.use((error, req, res, next) => { // eslint-disable-line
-    res.status(error.status || 500).json({
-        message: error.message,
+router.use((err, req, res, next) => { // eslint-disable-line
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
         customMessage: 'something bad happened in the cars-router',
-        stack: error.stack
+        stack: err.stack
     })
 })
 

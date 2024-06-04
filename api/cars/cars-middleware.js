@@ -1,20 +1,16 @@
 const Cars = require('./cars-model')
 
 const checkCarId = async (req, res, next) => {
-  try {
-    const id = req.params.id
-    const car = await Cars.getById(id)
+  const id = req.params.id
+  const car = await Cars.getById(id)
 
-    if (!car) {
-      return next({ 
-        status: 404, 
-        message: `car with id ${id} is not found` 
-      })
-    }
-
+  if (!car) {
+    next({ 
+      status: 404, 
+      message: `car with id ${id} is not found` 
+    })
+  } else {
     next()
-  } catch (error) {
-    next(error)
   }
 }
 
