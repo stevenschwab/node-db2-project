@@ -1,4 +1,5 @@
 const Cars = require('./cars-model')
+const vinValidator = require('vin-validator')
 
 const checkCarId = async (req, res, next) => {
   const id = req.params.id
@@ -16,14 +17,20 @@ const checkCarPayload = (req, res, next) => {
   const missingField = requiredFields.find(field => !req.body[field] || !req.body[field].toString().trim().length)
   
   if (missingField) {
-    return next({ status: 400, message: `${missingField} is missing` })
+    next({ status: 400, message: `${missingField} is missing` })
+  } else {
+    next()
   }
-
-  next()
 }
 
 const checkVinNumberValid = (req, res, next) => {
-  // DO YOUR MAGIC
+  const { vin } = req.body
+
+  if (!vinValidator.validate(vin)) {
+    next({ status: 400, message: `vin ${vin} is invalid` })
+  } else {
+    next()
+  }
 }
 
 const checkVinNumberUnique = (req, res, next) => {
