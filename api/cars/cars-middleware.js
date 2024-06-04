@@ -11,7 +11,7 @@ const checkCarId = async (req, res, next) => {
         message: `car with id ${id} is not found` 
       })
     }
-    
+
     next()
   } catch (error) {
     next(error)
@@ -19,7 +19,14 @@ const checkCarId = async (req, res, next) => {
 }
 
 const checkCarPayload = (req, res, next) => {
-  // DO YOUR MAGIC
+  const requiredFields = ['vin', 'make', 'model', 'mileage']
+  const missingField = requiredFields.find(field => !req.body[field] || !req.body[field].toString().trim().length)
+  
+  if (missingField) {
+    return next({ status: 400, message: `${missingField} is missing` })
+  }
+
+  next()
 }
 
 const checkVinNumberValid = (req, res, next) => {
