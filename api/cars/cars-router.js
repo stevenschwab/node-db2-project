@@ -1,8 +1,13 @@
 const router = require('express').Router()
 const Cars = require('./cars-model')
 
-router.get('/', (req, res, next) => {
-    
+router.get('/', async (req, res, next) => {
+    try {
+        const cars = await Cars.getAll()
+        res.json(cars)
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.get('/:id', (req, res, next) => {
