@@ -52,8 +52,13 @@ router.put('/:id',
       }
 })
 
-router.delete('/:id', (req, res, next) => {
-
+router.delete('/:id', checkCarId, async (req, res, next) => {
+    try {
+        await Cars.deleteById(req.params.id)
+        res.json(req.body.car)
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
