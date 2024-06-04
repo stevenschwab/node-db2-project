@@ -4,7 +4,8 @@ const {
     checkCarId, 
     checkCarPayload, 
     checkVinNumberValid, 
-    checkVinNumberUnique 
+    checkVinNumberUnique, 
+    checkVinNumberUniqueOnUpdate
 } = require('./cars-middleware')
 
 router.get('/', async (req, res, next) => {
@@ -41,10 +42,11 @@ router.put('/:id',
     checkCarId, 
     checkCarPayload, 
     checkVinNumberValid, 
-    checkVinNumberUnique, 
+    checkVinNumberUniqueOnUpdate, 
     async (req, res, next) => {
       try {
-        
+        const updatedCar = await Cars.updateById(req.params.id, req.body)
+        res.json(updatedCar)
       } catch (error) {
         next(error)
       }

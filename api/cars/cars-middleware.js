@@ -20,6 +20,11 @@ const checkCarPayload = (req, res, next) => {
   if (missingField) {
     next({ status: 400, message: `${missingField} is missing` })
   } else {
+    for (let field of requiredFields) {
+      if (typeof req.body[field] === 'string') {
+        req.body[field] = req.body[field].trim()
+      }
+    }
     next()
   }
 }
@@ -45,9 +50,21 @@ const checkVinNumberUnique = async (req, res, next) => {
   }
 }
 
+const checkVinNumberUniqueOnUpdate = async (req, res, next) => {
+  const { id } = req.params
+  const existingCar = await Cars.getById(id)
+
+  if (existingCar && existingCar.id !== Number(id)) {
+    next({ status: 400, message: `vin ${req.body.vin} already exists` })
+  } else {
+    next()
+  }
+}
+
 module.exports = {
   checkCarId,
   checkCarPayload,
   checkVinNumberValid,
   checkVinNumberUnique,
+  checkVinNumberUniqueOnUpdate
 }
