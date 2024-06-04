@@ -20,5 +20,6 @@ const create = async car => {
 module.exports = {
   getAll,
   getById,
-  create
+  create,
+  getByVin
 }
