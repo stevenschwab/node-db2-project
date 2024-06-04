@@ -18,7 +18,7 @@ exports.seed = async function(knex) {
         make: 'Toyota',
         model: 'Corolla',
         mileage: 98765.43,
-        title: 'clean',
+        title: 'salvage',
         transmission: 'manual'
       },
       {
